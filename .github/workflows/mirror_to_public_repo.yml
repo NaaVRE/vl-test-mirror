@@ -1,0 +1,29 @@
+name: Mirror __mirror_to_public_repo to public repo
+
+on:
+  push: 
+    branches: [ __mirror_to_public_repo ]
+    
+permissions:
+  contents: read
+
+env:
+  PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+  PUBLIC_REPO: vl-test-mirror
+  OWNER: ${{ github.repository_owner }}
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4
+        with:
+          ref: __mirror_to_public_repo
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Push to public repo
+        run: |
+          git config user.name  "mirror-bot"
+          git config user.email "mirror-bot@users.noreply.github.com"
+
+          git remote add public-repo https://x-access-token:${{env.PAT_TOKEN}}@github.com/${{env.OWNER}}/${{env.PUBLIC_REPO}}
+          git push public-repo main
