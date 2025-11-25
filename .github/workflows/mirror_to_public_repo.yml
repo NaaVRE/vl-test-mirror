@@ -9,10 +9,13 @@ permissions:
 
 env:
   PUBLIC_REPO: vl-test-mirror
+  PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
 jobs:
   mirror:
     runs-on: ubuntu-latest
     steps: 
+      - name: Print Repository Owner
+        run: echo "The pat is: $PAT_TOKEN"
       - uses: actions/checkout@v4
         with:
           ref: __mirror_to_public_repo
@@ -25,5 +28,5 @@ jobs:
           git config user.email "qcdis-bot@users.noreply.github.com"
 
           git push -f \
-            "https://x-access-token:${{ secrets.Doesnt_exist }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO_NAME }}".git \
+            "https://x-access-token:${{ env.PAT_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO_NAME }}".git \
             __mirror_to_public_repo:main
