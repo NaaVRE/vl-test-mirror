@@ -14,8 +14,6 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps: 
-      - name: Print Repository Owner
-        run: echo "The pat is: $PAT_TOKEN"
       - uses: actions/checkout@v4
         with:
           ref: __mirror_to_public_repo
