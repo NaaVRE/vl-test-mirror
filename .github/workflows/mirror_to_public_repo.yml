@@ -14,7 +14,7 @@ jobs:
   test_pat:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if PAT_TOKEN secret exists
+      - name: Check if PAT secret exists
         run: |
           if [ -n "$PAT" ]; then
             # If the variable is NOT zero length (-n), it loaded successfully
@@ -23,6 +23,23 @@ jobs:
             # If the variable IS zero length, it failed to load
             echo "❌ Failure: The PAT variable is empty."
             exit 1
+          fi
+      - name: Test Authentication to Target Repo (Dry Run)
+        run: |
+          # Use 'git ls-remote' to test read authentication without pushing any data
+          # This should succeed if the PAT has read access.
+          git ls-remote "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}.git"
+          
+          echo "✅ Authentication test passed. The PAT is connecting successfully."
+  test_fail_pat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PAT secret exists
+        run: |
+          if [ -n "$FOOTPAT" ]; then
+            echo "❌ Failure: The FOOTPAT is a variable."
+          else
+            echo "✅ Success: The FOOTPAT doesn't exist."
           fi
       - name: Test Authentication to Target Repo (Dry Run)
         run: |
@@ -43,6 +60,4 @@ jobs:
           git config user.name  "qcdis-bot"
           git config user.email "qcdis-bot@users.noreply.github.com"
 
-          git push -f \
-            "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}.git" \
-            __mirror_to_public_repo:main
+          git push -f "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}.git" __mirror_to_public_repo:main
