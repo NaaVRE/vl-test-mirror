@@ -41,11 +41,11 @@ jobs:
           else
             echo "✅ Success: The FOOTPAT doesn't exist."
           fi
-      - name: Test Authentication to Target Repo (Dry Run)
+      - name: Test Authentication to Target Repo (Dry Run) - expecting failure
         run: |
           # Use 'git ls-remote' to test read authentication without pushing any data
           # This should succeed if the PAT has read access.
-          git ls-remote "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}.git"
+          git ls-remote "https://x-access-token:${{ env.NONEXISTENTPAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}.git"
           
           echo "✅ Authentication test passed. The PAT is connecting successfully."
   mirror:
