@@ -9,15 +9,12 @@ permissions:
 
 env:
   PUBLIC_REPO: vl-test-mirror
-  PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+  PAT: ${{ secrets.PAT_TOKEN }}
 jobs:
   test_pat:
     runs-on: ubuntu-latest
     steps:
       - name: Check if PAT_TOKEN secret exists
-        env:
-          # Pass the secret into a job environment variable
-          PAT: ${{ secrets.PAT_TOKEN }}
         run: |
           if [ -n "$PAT" ]; then
             # If the variable is NOT zero length (-n), it loaded successfully
@@ -28,8 +25,6 @@ jobs:
             exit 1
           fi
       - name: Test Authentication to Target Repo (Dry Run)
-        env:
-          PAT: ${{ secrets.PAT_TOKEN }}
           PUBLIC_REPO_OWNER: YourUser
         run: |
           # Use 'git ls-remote' to test read authentication without pushing any data
@@ -50,5 +45,5 @@ jobs:
           git config user.email "qcdis-bot@users.noreply.github.com"
 
           git push -f \
-            "https://x-access-token:${{ env.PAT_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}".git \
+            "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}".git \
             __mirror_to_public_repo:main
