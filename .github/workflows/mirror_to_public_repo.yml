@@ -19,11 +19,15 @@ jobs:
         with:
           ref: __mirror_to_public_repo
           fetch-depth: 0
-          persist-credentials: false
-      - name: Push to public repo
+      - name: Push __mirror_to_public_repo to main
+        env:
+            PAT: ${{ secrets.PAT_TOKEN }}
+            PUBLIC_REPO_OWNER: ${{ github.repository_owner }}
+            PUBLIC_REPO_NAME: vl-test-mirror
         run: |
           git config user.name  "mirror-bot"
           git config user.email "mirror-bot@users.noreply.github.com"
 
-          git remote add public-repo https://x-access-token:${{env.PAT_TOKEN}}@github.com/${{env.OWNER}}/${{env.PUBLIC_REPO}}
-          git push public-repo main
+          git push -f \
+            "https://${{ env.PUBLIC_REPO_OWNER }}:${{ env.PAT }}@github.com/${{ env.PUBLIC_REPO_OWNER }}/${{ env.PUBLIC_REPO_NAME }}" \
+            __mirror_to_public_repo:main
