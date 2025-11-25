@@ -11,6 +11,22 @@ env:
   PUBLIC_REPO: vl-test-mirror
   PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
 jobs:
+  test_pat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PAT_TOKEN secret exists
+        env:
+          # Pass the secret into a job environment variable
+          PAT: ${{ secrets.PAT_TOKEN }}
+        run: |
+          if [ -n "$PAT" ]; then
+            # If the variable is NOT zero length (-n), it loaded successfully
+            echo "✅ Success: The PAT was loaded (length: ${#PAT} characters)."
+          else
+            # If the variable IS zero length, it failed to load
+            echo "❌ Failure: The PAT variable is empty."
+            exit 1
+          fi
   mirror:
     runs-on: ubuntu-latest
     steps: 
