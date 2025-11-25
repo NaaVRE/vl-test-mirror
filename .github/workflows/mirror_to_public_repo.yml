@@ -31,11 +31,10 @@ jobs:
         env:
           PAT: ${{ secrets.PAT_TOKEN }}
           PUBLIC_REPO_OWNER: YourUser
-          PUBLIC_REPO_NAME: your-public-repo
         run: |
           # Use 'git ls-remote' to test read authentication without pushing any data
           # This should succeed if the PAT has read access.
-          git ls-remote "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO_NAME }}.git"
+          git ls-remote "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}.git"
           
           echo "✅ Authentication test passed. The PAT is connecting successfully."
   mirror:
@@ -46,12 +45,10 @@ jobs:
           ref: __mirror_to_public_repo
           fetch-depth: 0
       - name: Push __mirror_to_public_repo to main
-        env:
-            PUBLIC_REPO_NAME: vl-test-mirror
         run: |
           git config user.name  "qcdis-bot"
           git config user.email "qcdis-bot@users.noreply.github.com"
 
           git push -f \
-            "https://x-access-token:${{ env.PAT_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO_NAME }}".git \
+            "https://x-access-token:${{ env.PAT_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}".git \
             __mirror_to_public_repo:main
