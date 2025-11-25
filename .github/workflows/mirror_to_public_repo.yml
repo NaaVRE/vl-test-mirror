@@ -25,7 +25,6 @@ jobs:
             exit 1
           fi
       - name: Test Authentication to Target Repo (Dry Run)
-          PUBLIC_REPO_OWNER: YourUser
         run: |
           # Use 'git ls-remote' to test read authentication without pushing any data
           # This should succeed if the PAT has read access.
