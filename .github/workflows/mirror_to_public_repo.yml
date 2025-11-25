@@ -27,6 +27,17 @@ jobs:
             echo "❌ Failure: The PAT variable is empty."
             exit 1
           fi
+      - name: Test Authentication to Target Repo (Dry Run)
+        env:
+          PAT: ${{ secrets.PAT_TOKEN }}
+          PUBLIC_REPO_OWNER: YourUser
+          PUBLIC_REPO_NAME: your-public-repo
+        run: |
+          # Use 'git ls-remote' to test read authentication without pushing any data
+          # This should succeed if the PAT has read access.
+          git ls-remote "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO_NAME }}.git"
+          
+          echo "✅ Authentication test passed. The PAT is connecting successfully."
   mirror:
     runs-on: ubuntu-latest
     steps: 
