@@ -60,4 +60,4 @@ jobs:
           git config user.name  "qcdis-bot"
           git config user.email "qcdis-bot@users.noreply.github.com"
 
-          git push -f "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}.git" __mirror_to_public_repo:main
+          git push -f "https://x-access-token:${{ env.PAT }}@github.com/naavre/${{ env.PUBLIC_REPO }}.git" __mirror_to_public_repo:main
