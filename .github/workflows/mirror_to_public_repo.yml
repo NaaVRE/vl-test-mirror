@@ -9,7 +9,7 @@ permissions:
 
 env:
   PUBLIC_REPO: vl-test-mirror
-  PAT: ${{ secrets.PAT_TOKEN }}
+  PAT: ${{ secrets.PAT_VL_TEST_MIRROR }}
 jobs:
   test_pat:
     runs-on: ubuntu-latest
