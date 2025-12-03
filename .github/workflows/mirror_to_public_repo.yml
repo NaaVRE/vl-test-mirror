@@ -9,7 +9,7 @@ permissions:
 
 env:
   PUBLIC_REPO: vl-test-mirror
-  PAT: ${{ secrets.PAT_TOKEN }}
+  PAT: ${{ secrets.PAT_VL_TEST_MIRROR }}
 jobs:
   test_pat:
     runs-on: ubuntu-latest
@@ -57,7 +57,7 @@ jobs:
           fetch-depth: 0
       - name: Push __mirror_to_public_repo to main
         run: |
-          git config user.name  "qcdis-bot"
-          git config user.email "qcdis-bot@users.noreply.github.com"
+          git config user.name  "koengreuell"
+          git config user.email "koengreuell@users.noreply.github.com"
 
-          git push -f "https://x-access-token:${{ env.PAT }}@github.com/${{ github.repository_owner }}/${{ env.PUBLIC_REPO }}.git" __mirror_to_public_repo:main
+          git push -f "https://x-access-token:${{ env.PAT }}@github.com/naavre/${{ env.PUBLIC_REPO }}.git" __mirror_to_public_repo:main
